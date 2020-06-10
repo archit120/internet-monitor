@@ -1,0 +1,128 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <canvas id="speed_down"></canvas>
+        <canvas id="pings"></canvas>
+    </div>
+    <script>
+
+
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+        };
+
+
+        var data = REPLACE_WITH_DATA;
+
+        var ctx = document.getElementById('speed_down').getContext('2d');
+        // ctx.canvas.width = 600;
+        // ctx.canvas.height = 300;
+
+        var color = Chart.helpers.color;
+        var cfg = {
+            type: 'line',
+            data: {
+                datasets: [{
+                    labels: data["download_speeds"].map(function (x) { return x['x']; }),
+                    label: 'Speedtest - Download Speeds',
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.red,
+                    data: data["download_speeds"],
+                    type: 'line',
+                    pointRadius: 5,
+                    fill: false,
+                    lineTension: 0,
+                    borderWidth: 2
+                },
+                {
+                    labels: data["upload_speeds"].map(function (x) { return x['x']; }),
+
+                    label: 'Speedtest - Upload Speeds',
+                    backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.blue,
+                    data: data["upload_speeds"],
+                    type: 'line',
+                    pointRadius: 5,
+                    fill: false,
+                    lineTension: 0,
+                    borderWidth: 2
+                },
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        type: 'time',
+                        distribution: 'linear',
+                        time: {
+                            unit: 'second'
+                        }
+
+
+                    }]
+                }
+            }
+
+        };
+
+        var chart = new Chart(ctx, cfg);
+        ctx = document.getElementById('pings').getContext('2d');
+        // ctx.canvas.width = 600;
+        // ctx.canvas.height = 300;
+
+         color = Chart.helpers.color;
+         cfg = {
+            type: 'line',
+            data: {
+                datasets: data["ping_data"]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        type: 'time',
+                        distribution: 'linear',
+                        time: {
+                            unit: 'second'
+                        }
+
+
+                    }]
+                }
+            }
+
+        };
+         chart = new Chart(ctx, cfg);
+
+    </script>
+
+</body>
+
+</html>
